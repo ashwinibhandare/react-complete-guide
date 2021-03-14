@@ -1,10 +1,13 @@
 import logo from './logo.svg';
-import './App.css';
+import styled from "styled-components";
+//import './App.css';
 import Person from "./Person/Person";
 import UserInput from "./UserInput/UserInput";
 import UserOutput from "./UserOutput/UserOutput";
 
 import React, { useState } from 'react';
+import Validation from './Validation/Validation';
+import Char from "./Char/Char";
 
 
 function App() {
@@ -14,8 +17,6 @@ function App() {
       {id:2, name: "Manu", age: "30"}
     ]
   });
-
-
 
   const[otherState, setOtherState] = useState('some other value');
 
@@ -88,10 +89,67 @@ const deletePersonHandler = (personIndex) => {
   setPersonState({persons: persons});
 }
 
-  return (
-    <div className="App">
+const [textCountState, setTextCountState] = useState({text:''});
+const textCount = (event) => {
+  setTextCountState({text:event.target.value});
+}
 
-      <button onClick={togglePersonHandler} >Button</button>
+var textArray = textCountState.text.split("");
+
+const deleteCharChandler = (index) => {
+    const text = textCountState.text.split("");
+    text.splice(index, 1);
+    const updatetext = text.join('');
+    setTextCountState({text:updatetext})
+}
+
+const charList = textArray.map((ch, index) => {
+    return <Char character={ch}
+    key={index}
+    clicked={()=>deleteCharChandler(index)}/>
+});
+
+// const pstyle = {
+//   backgroundColor: 'green',
+//   color: 'white',
+//   font: 'inherit',
+//   border: '1px solid blue',
+//   padding: '8px',
+//   cursor:'pointer',
+//   ':hover' : {
+//     backgroundColor: 'lightgreen',
+//     color: 'black'
+//   }
+// };
+
+const StyleButton = styled.button `
+  background-color: ${props => props.alt ? 'red' : 'green'};
+  color: white;
+  font: inherit;
+  border: 1px solid blue;
+  padding: 8px;
+  cursor:pointer;
+  &:hover : {
+    background-color: ${props => props.alt ? 'salmon' : 'lightgreen'};
+    color: black;
+  }
+`;
+
+let classes = [];
+if(personState.persons.length<=2){
+
+  console.log(personState.persons.length);
+}
+if(personState.persons.length<=1){
+  console.log(personState.persons.length);
+  }
+
+
+  return ( 
+    
+    <div className="App" >
+      <p className={classes.join(' ')}>Class</p>
+      <StyleButton onClick={togglePersonHandler} alt={showPersonState}>Toggle Button</StyleButton>
   
       { showPersonState ?
       <div>
@@ -99,12 +157,15 @@ const deletePersonHandler = (personIndex) => {
            return <Person 
           //  click={switchNameHandler}
           click={() => deletePersonHandler(index)}
+          
            name={person.name}
            age={person.age}
            change = {(event)=>nameChangeHandler(event, person.id)}
            key={person.id}
            ></Person>
         })}
+       
+
     </div> : null
     }
       <button onClick={changeUserName}></button>
@@ -113,6 +174,14 @@ const deletePersonHandler = (personIndex) => {
       <UserOutput userName={userState.user[1].name}></UserOutput>
       <UserOutput userName={userState.user[2].name}></UserOutput>
 
+    {/* Assigment 2 */}
+      <input type="text" onChange={(event) => textCount(event)}  value={textCountState.text}/>
+      <p>{textCountState.text}</p>
+
+      <Validation textLegth={textCountState.text.length}></Validation>
+      { charList }
+     
+    {/* END Assigment 2 */}
     </div>
   );
 }
