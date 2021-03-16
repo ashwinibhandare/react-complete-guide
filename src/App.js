@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import styled from "styled-components";
-//import './App.css';
+import classes from './App.css';
 import Person from "./Person/Person";
 import UserInput from "./UserInput/UserInput";
 import UserOutput from "./UserOutput/UserOutput";
@@ -109,47 +109,23 @@ const charList = textArray.map((ch, index) => {
     clicked={()=>deleteCharChandler(index)}/>
 });
 
-// const pstyle = {
-//   backgroundColor: 'green',
-//   color: 'white',
-//   font: 'inherit',
-//   border: '1px solid blue',
-//   padding: '8px',
-//   cursor:'pointer',
-//   ':hover' : {
-//     backgroundColor: 'lightgreen',
-//     color: 'black'
-//   }
-// };
-
-const StyleButton = styled.button `
-  background-color: ${props => props.alt ? 'red' : 'green'};
-  color: white;
-  font: inherit;
-  border: 1px solid blue;
-  padding: 8px;
-  cursor:pointer;
-  &:hover : {
-    background-color: ${props => props.alt ? 'salmon' : 'lightgreen'};
-    color: black;
-  }
-`;
-
-let classes = [];
-if(personState.persons.length<=2){
-
+let assignedClasses = [];
+if(personState.persons.length<=2) {
+  assignedClasses.push(classes.red);
   console.log(personState.persons.length);
 }
 if(personState.persons.length<=1){
-  console.log(personState.persons.length);
+  assignedClasses.push(classes.bold);
   }
 
 
   return ( 
     
-    <div className="App" >
-      <p className={classes.join(' ')}>Class</p>
-      <StyleButton onClick={togglePersonHandler} alt={showPersonState}>Toggle Button</StyleButton>
+    <div className="{classes.App}" >
+      <p className={assignedClasses.join(' ')}>Class</p>
+      <button onClick={togglePersonHandler} alt={showPersonState}>
+        Toggle Button
+        </button>
   
       { showPersonState ?
       <div>
